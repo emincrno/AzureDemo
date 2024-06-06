@@ -17,9 +17,6 @@ jobs:
       - name: Code Checkout
         uses: actions/checkout@v4
 
-      - name: ZIP Artifact
-        run: zip release.zip ./* -r
-
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -31,6 +28,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: "auftrag-campus-210"
+          app-name: "wa-demoapp-prod-bff3fb24"
           slot-name: "Production"
           package: .
