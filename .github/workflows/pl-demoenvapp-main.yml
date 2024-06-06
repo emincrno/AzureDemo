@@ -1,0 +1,36 @@
+name: Pipeline-DemoEnvApp-Main
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+
+      - name: ZIP Artifact
+        run: zip release.zip ./* -r
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.CLIENT_ID}}
+          tenant-id: ${{ secrets.TENANT_ID}}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID}}
+
+      - name: Deploy WebApp
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "auftrag-campus-210"
+          slot-name: "Production"
+          package: .
