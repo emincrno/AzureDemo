@@ -17,9 +17,6 @@ export default function Home({ items }) {
 export async function getStaticProps() {
   const env = new Env();
 
-  console.log("ENV:", env);
-  console.log("ENV-URL:", env.get("FUNC_URL"));
-
   const res = await fetch(env.get("FUNC_URL"));
 
   let items = await res.json();
